@@ -1,1093 +1,305 @@
-[Bayut Scraper](https://apify.com/ahmed_jasarevic/bayut-scraper?fpr=data)
+[Bayut Scraper](https://apify.com/dhrumil/bayut-scraper?fpr=data)
 
-# 🏗️ High-Fidelity Bayut Real Estate & Project Scraper
+## 🏡 What is Bayut Real Estate Properties Scraper?
 
-Maximize your real estate market intelligence with the most comprehensive **Bayut.com Scraper** on the Apify platform. Unlike standard tools, this Actor extracts deep-level JSON metadata, providing a 360-degree view of property projects, developer portfolios, and financial structures in Dubai and the UAE.
+This Bayut properties Scraper will enable you scrape any sale/rent listing from  collection from [bayut.com](https://www.bayut.com/).
 
-## 🌟 Why This Scraper Outperforms the Rest
+You can simply take your listing url from browser and enter it into this actor. This actor will crawl through all pages of particular listing and generate dataset for you.
 
-When scraping high-security platforms like Bayut, most bots get blocked by Cloudflare or return "surface-level" data. Our solution uses **Playwright Stealth technology** to mimic human behavior and tap into internal API endpoints, delivering data that is usually hidden from the front-end user.
+Listing url is something you get when you perform the search on bayut site. Example listing urls :
 
-### 💎 Premium Data Points Extracted:
+- [https://www.bayut.com/for-sale/property/dubai/al-satwa/](https://www.bayut.com/for-sale/property/dubai/al-satwa/)
+- [https://www.bayut.com/to-rent/property/dubai/al-satwa/](https://www.bayut.com/to-rent/property/dubai/al-satwa/)
+- [https://www.bayut.com/for-sale/3-bedroom-apartments/dubai/dubai-marina/](https://www.bayut.com/for-sale/3-bedroom-apartments/dubai/dubai-marina/)
 
-- **Detailed Payment Plans:** Extract full milestone breakdowns (e.g., 20% downpayment, 1% monthly installments). Perfect for financial analysis and mortgage lead gen.
-- **Exact Geolocation:** High-precision `lat` and `lng` coordinates and internal `geography` objects for GIS mapping and heatmaps.
-- **Developer & Agency Insights:** Full profiles of developers (like DAMAC, Emaar), including logos, licensing info, and creation dates.
-- **Unit Breakdown & Availability:** Detailed lists of every unit type within a project (Villas, Townhouses, Apartments) with specific area sizes (`areaMin`, `areaMax`) and pricing.
-- **Multilingual Content:** Full descriptions and titles in **English, Arabic (l1), Chinese (l2), and Russian (l3)**—ideal for international real estate portals.
-- **High-Res Media:** Direct S3 links to cover photos, marketing images, and 3D floor plans.
+## 🚪 What can this Bayut Scraper do?
 
----
+📈 Extract Bayut market data listings on Bayut
 
-## 🚀 Key Features & SEO Benefits
+👀 This actor is not just scraper but also has monitoring capability. You can turn on monitoring mode and it will give you only newly added properties compared to your previous scrapes.
 
-- **Anti-Bot Bypass (WAF Protection):** Engineered to bypass Cloudflare and perimeter security using residential proxies and human-like interaction intervals.
-- **SEO-Ready Output:** The data is structured in clean JSON/CSV formats, ready to be imported into your own real estate website to boost your local SEO with fresh, detailed content.
-- **Smart Pagination:** Handles Bayut’s strict `page_size` limits (max 24) automatically, ensuring you don't miss a single listing.
-- **Advanced Amenities Mapping:** Categorized features from "Health and Fitness" (Swimming Pools, Gyms) to "Family & Recreation" (Cafeterias, Parks).
+📩  This actor also helps yu to identify which properties are not listed anymore. Please refer to Identifying delisted properties
 
----
+⬇️ Download Bayut real estate data in Excel, CSV, JSON, and other formats
 
-## 📊 Data Schema Preview
+## 📚 How do I start scraping with this scraper?
 
-Every result provides a massive JSON object. Below is a snapshot of the high-value fields you will receive:
+1. Register for your free Apify account [here](https://apify.com/pricing?fpr=z2di7)
+2. You don't need to provide your credit card details for free acount. Just click on "Get Started" button on above link and complete the registration only.
+3. Free account comes with reasonable credits to try out this actor. This actor also comes with free trial of 3 days without any commitment/upfront charge.
+4. Run this actor and verify the scraped data. Apify has huge integration possibilities. You can download the data or push the data into any 3rd party platform directly.
 
-| Field | Description | Use Case |
-| --- | --- | --- |
-| `paymentPlans` | Full financial breakdown of installments | ROI & Financial Modeling |
-| `_geoloc` | Precise GPS coordinates | Interactive Map Integrations |
-| `description_l1` | Native Arabic descriptions | Multi-language Website Support |
-| `unitCategories` | Breakdown of unit types (Villas vs Townhouses) | Inventory Analysis |
-| `amenities` | Lists of building/community features | Feature-based Filtering |
+## 🌳 What data can I extract using this tool?
 
----
+| 📝 | 📝 |
+| --- | --- |
+| Listing Title | Full Address (displayAddress) |
+| Listing URL | Reference Number |
+| Permit Number | DED License |
+| Bathrooms | Bedrooms |
+| Agent Name | Agent Phone |
+| Listing Type | Property Type |
+| Latitude | Longitude |
+| Completion Status | Agency Name |
+| Text Description | Formatted HTML Description |
+| Amenities | Images |
+| Price | Size (sqft) |
+| RERA | BRN |
+| Furnishing | Zone Name |
+| Added On | Community Name |
+| Building Name | Broker Info |
+| Price Duration | Price Currency |
+| Coordinates | Verified |
+| Broker License | Similar Transactions |
 
-## ⚙️ How to Start Scraping
+This tool extracts comprehensive property data including all the above fields for each listing.
 
-1. **Start URL:** Go to [Bayut.com](https://www.bayut.com), apply your filters (Location, Category, Purpose), and copy the resulting URL or the API search endpoint.
-2. **Max Pages:** Set the depth of your crawl (e.g., 10 pages will yield up to 240 projects).
-3. **Proxy Configuration:** **MANDATORY.** Use Apify Residential Proxies (Targeting UAE is recommended for the best bypass rates).
-4. **Launch:** Hit "Run" and watch the dataset populate with rich, actionable data.
+## ⬇️ Input
 
----
+For simple usecase, you just need to provide browser url of search result page & that's all. You can leave other fields as they are to be sensible defaults.
 
-## 📥 Input Configuration
-
-The Actor accepts a JSON configuration that allows you to pinpoint exactly what data you need. Below is an example of a standard setup using **Residential Proxies** (highly recommended for stability).
-
-### Input Example
+### Input example
 
 ```
 {
-  "startUrl": "https://www.bayut.com/api/projects/cpl/search?category=1&location=5003&purpose=for-sale",
-  "maxPages": 3,
-  "proxyConfiguration": {
-    "useApifyProxy": true,
-    "apifyProxyGroups": [
-      "RESIDENTIAL"
+    "listUrls": [
+        {
+            "url": ""
+        }
     ],
-    "countryCode": "AE"
-  }
+    "monitoringMode": false,
+	"retrieveUnitNumber" : false,
+    "fullPropertyDetails" : false,
+    "enableDelistingTracker" : false,
+    "addEmptyTrackerRecord" : false
 }
 ```
 
-### Input Fields Breakdown:
+Understading monitoring mode :
 
-- **`startUrl`** (Required): The initial API search URL from Bayut. You can easily obtain this by filtering properties on the website and copying the request URL. It contains parameters like `location`, `category`, and `purpose`.
-- **`maxPages`** (Optional): Defines the depth of the scrape. Each page typically contains **24 high-fidelity project listings**. Default is `5`.
-- **`proxyConfiguration`** (Required): To bypass sophisticated WAF (Web Application Firewalls), the use of **Residential Proxies** with UAE (`AE`) country targeting is essential.
+- `monitoringMode` : This option when turned on will only scrape newly added property listings compared to previously scraped properties by this actor. When you keep this option on, it will scraper full list for the first time and then in next run, it will scrape only newly found incremental data.
+- `retrieveUnitNumber` : This provides you Unit number of property as well. Turn this on, only if you have [Dubai Property Unit Finder](https://apify.com/dhrumil/dubai-property-unit-finder?fpr=z2di7) actor with you.
+- `fullPropertyDetails` : If you don't need aminities, description and photos, please keep this option off. It will increase the scraping speed by multi fold.
+- `enableDelistingTracker` : This option when turned on will start tracking date against each property under Apify Key Value store. This KV store can be queried later to find out which properties are delisted.
+- `addEmptyTrackerRecord` : This option when turned on will add empty record having only id of property to Apify dataset. This helps you identify whether property is still listed compared to your own database in incremental mode.
 
----
+## ⬆️ Output
 
-## 📤 Output Data Structure
+The scraped data is stored in the dataset of each run. The data can be viewed or downloaded in many popular formats, such as *JSON, CSV, Excel, XML, RSS, and HTML*.
 
-The scraper produces a comprehensive dataset where each item represents a detailed project or property listing. Unlike basic scrapers, this output includes **nested objects** for financial plans, multilingual SEO content, and precise geospatial data.
+### Output example
 
-### Key Output Fields Highlight:
-
-- **`id` & `externalID`**: Unique identifiers for database synchronization and duplicate prevention.
-- **`title` & `slug`**: SEO-friendly titles and URL slugs in multiple languages (English, Arabic, etc.).
-- **`_geoloc`**: Precise latitude and longitude for map rendering and spatial analysis.
-- **`price`**: Raw numerical price values, ideal for market trend calculations and currency conversions.
-- **`description`**: Full HTML-formatted descriptions containing marketing copy and project highlights.
-- **`paymentPlans`**: A detailed array of payment milestones, percentages, and installment descriptions.
-- **`units`**: An array of available unit types within the project, including room counts, area sizes, and specific price ranges for each.
-- **`agency`**: Complete developer/agency profile including brand names and high-resolution logos.
-- **`amenities`**: Categorized lists of building features (e.g., "Health and Fitness", "Recreation and Family").
-- **`photos`**: An array of marketing image objects with direct URLs to Bayut's high-res CDN.
-
----
+The result for scraping a single property like this:
 
 ```
 {
-	"id": 8921427,
-	"objectID": 8921427,
-	"ownerID": null,
-	"externalID": "2826",
-	"type": "project",
-	"hash": "3118c65",
-	"slug": "hayat_3-2826",
-	"state": "active",
-	"purpose": "for-sale",
-	"_geoloc": {
-		"lat": 24.855907523683,
-		"lng": 55.106394865459
-	},
-	"geography": {
-		"lat": 24.855907523683,
-		"lng": 55.106394865459
-	},
-	"product": null,
-	"description": "<p>Dubai South introduces Hayat 3, an upcoming development designed to offer a modern lifestyle. The freehold project will feature a range of spacious residences, designed to cater to contemporary family living. The design will incorporate large windows and open-plan layouts to maximise natural light and ventilation, while high-quality finishes provide a refined and modern aesthetic. Surrounded by landscaped green spaces and pedestrian-friendly pathways, the off-plan community will promote a healthy and sustainable lifestyle. The development by Dubai South will be positioned within a rapidly expanding area that benefits from proximity to Al Maktoum International Airport, major highways, schools and leisure destinations. </p>",
-	"description_l1": "<p>أطلقت شركة دبي الجنوب العقارية مشروع حياة 3 السكني في منطقة دبي الجنوب، وهو مشروع سكني قيد الإنشاء، مصمم لتوفير نمط حياة عصري ومتكامل. يتضمن المشروع مجموعة متنوعة من الوحدات السكنية الفسيحة التي تلائم متطلبات العائلات الحديثة. ويعتمد تصميم هذه المنازل على النوافذ الواسعة والمخططات الداخلية المفتوحة لتعزيز الإضاءة والتهوية الطبيعية، مع تشطيبات عالية الجودة تبرز الطابع العصري. </p><p>\n</p><p>يمتاز المشروع كذلك بمساحاته الخضراء وممراته الصديقة للمشاة، مما يعزز من أسلوب الحياة الصحي والمستدام. كما يقع ضمن منطقة حيوية بالقرب من مطار آل مكتوم الدولي، والطرق السريعة الرئيسية، مما يتيح للسكان الوصول بسهولة إلى العديد من خيارات المدارس والمتاجر والوجهات الترفيهية. </p>",
-	"description_l2": "<p>Dubai South introduces Hayat 3, an upcoming development designed to offer a modern lifestyle. The freehold project will feature a range of spacious residences, designed to cater to contemporary family living. The design will incorporate large windows and open-plan layouts to maximise natural light and ventilation, while high-quality finishes provide a refined and modern aesthetic. Surrounded by landscaped green spaces and pedestrian-friendly pathways, the off-plan community will promote a healthy and sustainable lifestyle. The development by Dubai South will be positioned within a rapidly expanding area that benefits from proximity to Al Maktoum International Airport, major highways, schools and leisure destinations. </p>",
-	"description_l3": "<p>Dubai South introduces Hayat 3, an upcoming development designed to offer a modern lifestyle. The freehold project will feature a range of spacious residences, designed to cater to contemporary family living. The design will incorporate large windows and open-plan layouts to maximise natural light and ventilation, while high-quality finishes provide a refined and modern aesthetic. Surrounded by landscaped green spaces and pedestrian-friendly pathways, the off-plan community will promote a healthy and sustainable lifestyle. The development by Dubai South will be positioned within a rapidly expanding area that benefits from proximity to Al Maktoum International Airport, major highways, schools and leisure destinations. </p>",
-	"location": [
-		{
-			"id": 1,
-			"level": 0,
-			"externalID": "5001",
-			"name": "UAE",
-			"name_l1": "الإمارات",
-			"name_l2": "阿联酋",
-			"name_l3": "ОАЭ",
-			"slug": "/uae"
-		},
-		{
-			"id": 2,
-			"level": 1,
-			"externalID": "5002",
-			"name": "Dubai",
-			"name_l1": "دبي",
-			"name_l2": "迪拜",
-			"name_l3": "Дубай",
-			"slug": "/dubai"
-		},
-		{
-			"id": 3355,
-			"level": 2,
-			"externalID": "8881",
-			"name": "Dubai South",
-			"name_l1": "دبي الجنوب",
-			"name_l2": "迪拜南部街区",
-			"name_l3": "Дубай Саут",
-			"slug": "/dubai/dubai-south",
-			"type": "neighbourhood"
-		},
-		{
-			"id": 89211,
-			"level": 3,
-			"externalID": "22194",
-			"name": "Hayat",
-			"name_l1": "حياة",
-			"name_l2": "Hayat",
-			"name_l3": "Hayat",
-			"slug": "/dubai/dubai-south/hayat",
-			"type": "neighbourhood"
-		},
-		{
-			"id": 89214,
-			"level": 4,
-			"externalID": "22196",
-			"name": "Hayat 3",
-			"name_l1": "حياة 3",
-			"name_l2": "Hayat 3",
-			"name_l3": "Hayat 3",
-			"slug": "/dubai/dubai-south/hayat/hayat-3",
-			"type": "neighbourhood"
-		}
-	],
-	"category": [
-		{
-			"id": 1,
-			"level": 0,
-			"externalID": "1",
-			"name": "Residential",
-			"name_l1": "سكني",
-			"name_l2": "居住物业",
-			"name_l3": "Жилые",
-			"slug": "residential",
-			"slug_l1": "residential",
-			"slug_l2": "residential",
-			"slug_l3": "residential",
-			"nameSingular": "Residential",
-			"nameSingular_l1": "سكني",
-			"nameSingular_l2": "居住物业",
-			"nameSingular_l3": "Жилые"
-		},
-		{
-			"id": 8,
-			"level": 1,
-			"externalID": "16",
-			"name": "Townhouses",
-			"name_l1": "تاون هاوس",
-			"name_l2": "联排别墅",
-			"name_l3": "Таунхаусы",
-			"slug": "townhouses",
-			"slug_l1": "townhouses",
-			"slug_l2": "townhouses",
-			"slug_l3": "townhouses",
-			"nameSingular": "Townhouse",
-			"nameSingular_l1": "تاون هاوس",
-			"nameSingular_l2": "联排别墅",
-			"nameSingular_l3": "Таунхаус"
-		}
-	],
-	"agency": {
-		"id": 29796754,
-		"objectID": 29796754,
-		"name": "Dubai South",
-		"name_l1": "دبي الجنوب",
-		"name_l2": "Dubai South",
-		"name_l3": "Dubai South",
-		"externalID": "581",
-		"product": null,
-		"productScore": null,
-		"location": null,
-		"licenses": [],
-		"logo": {
-			"id": 676991372,
-			"url": "https://bayut-production.s3.eu-central-1.amazonaws.com/image/676991372/0803d11fc9f24686aa268ad21e175ce2"
-		},
-		"slug": "dubai-south",
-		"slug_l1": "دبي-الجنوب",
-		"slug_l2": "dubai-south",
-		"slug_l3": "dubai-south",
-		"tr": 4,
-		"roles": [],
+	"id": "11578179",
+	"url": "<<property url here>>",
+	"title": "2BR + Maid l Prime Location l 0% Commission",
+	"displayAddress": "Asas Garden City 2, Jumeirah Garden City, Al Satwa, Dubai, UAE",
+	"buildingName": "Asas Garden City 2",
+	"communityName": "Jumeirah Garden City",
+	"bedrooms": 2,
+	"bathrooms": 4,
+	"addedOn": {},
+	"broker": "fäm Properties - Branch 26",
+	"agent": "Mohammed Isham Mohammed",
+	"agentInfo": null,
+	"agentPhone": "+97144469149",
+	"agentWhatsapp": null,
+	"agentEmail": null,
+	"verified": true,
+	"reference": "B-AS-134509",
+	"brokerLicenseNumber": "613164",
+	"brokerInfo": {
 		"active": true,
-		"createdAt": "2024-04-24T10:26:46.458242+00:00",
-		"commercialNumber": null,
-		"shortNumber": null,
-		"type": "developer"
-	},
-	"rooms": 3,
-	"baths": 0,
-	"area": 298.86907968,
-	"price": 3400000,
-	"hidePrice": false,
-	"createdAt": 1751978766.828013,
-	"updatedAt": 1751978766.82802,
-	"extraFields": {
-		"dldPropertySK": "2826"
-	},
-	"coverPhoto": {
-		"id": 783762457,
-		"externalID": "15678",
-		"title": "Cover Image",
-		"orderIndex": 1,
-		"nimaScore": 6.0173739231765335,
-		"main": true,
-		"type": "listing"
-	},
-	"photoIDs": [
-		783762457,
-		823521689,
-		823521692,
-		823521693
-	],
-	"photos": [
-		{
-			"id": 783762457,
-			"externalID": "15678",
-			"title": "Cover Image",
-			"orderIndex": 1,
-			"nimaScore": 6.0173739231765335,
-			"type": "listing"
-		},
-		{
-			"id": 823521689,
-			"externalID": "18285",
-			"title": "Marketing Image 1",
-			"orderIndex": 2,
-			"nimaScore": 7.691161165056201,
-			"type": "listing"
-		},
-		{
-			"id": 823521692,
-			"externalID": "18286",
-			"title": "Marketing Image 2",
-			"orderIndex": 3,
-			"nimaScore": 6.917353956536431,
-			"type": "listing"
-		},
-		{
-			"id": 823521693,
-			"externalID": "18287",
-			"title": "Marketing Image 3",
-			"orderIndex": 4,
-			"nimaScore": 5.908861309751444,
-			"type": "listing"
-		}
-	],
-	"floorPlans": [],
-	"videos": [],
-	"amenities": [
-		{
-			"externalGroupID": 3,
-			"groupRank": 3,
-			"text": "Health and Fitness",
-			"text_l1": "الصحة و اللياقة",
-			"text_l2": "阳台",
-			"text_l3": "Здоровье и Фитнесс",
-			"amenities": [
-				{
-					"text": "Gym or Health Club",
-					"text_l1": "صالة رياضية أو نادي صحي",
-					"text_l2": "健身房或健身俱乐部",
-					"text_l3": "Тренажерный зал или оздоровительный клуб",
-					"value": "",
-					"rank": 3,
-					"slug": "gym-or-health-club",
-					"format": "checkbox",
-					"externalID": 22
-				},
-				{
-					"text": "Swimming Pool",
-					"text_l1": "مسبح",
-					"text_l2": "附近医院",
-					"text_l3": "Бассейн",
-					"value": "",
-					"rank": 6,
-					"slug": "swimming-pool",
-					"format": "checkbox",
-					"externalID": 45
-				}
-			]
-		},
-		{
-			"externalGroupID": 2,
-			"groupRank": 4,
-			"text": "Recreation and Family",
-			"text_l1": "الترفيه والأسرة",
-			"text_l2": "景观",
-			"text_l3": "Отдых и семья",
-			"amenities": [
-				{
-					"text": "Kids Play Area",
-					"text_l1": "منطقة لعب للأطفال",
-					"text_l2": "儿童娱乐区",
-					"text_l3": "Детская игровая площадка",
-					"value": "",
-					"rank": 3,
-					"slug": "kids-play-area",
-					"format": "checkbox",
-					"externalID": 34
-				}
-			]
-		}
-	],
-	"completionDetails": {
-		"startDate": null,
-		"completionDate": 1843243200,
-		"completionPercentage": null
-	},
-	"contactMethodAvailability": {
-		"whatsapp": false,
-		"sms": false,
-		"email": false,
-		"call": false
-	},
-	"title": "Hayat 3",
-	"title_l1": "حياة 3",
-	"title_l2": "Hayat 3",
-	"title_l3": "Hayat 3",
-	"units": [
-		{
-			"id": 1213118,
-			"externalID": "25202",
-			"active": true,
-			"name": "Type 1 - Edge Unit",
-			"name_l1": "Type 1 - Edge Unit",
-			"name_l2": "Type 1 - Edge Unit",
-			"name_l3": "Type 1 - Edge Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 3,
-			"baths": 0,
-			"areaMin": 314.38388736,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714240,
-					"externalID": "d6e6c28ebca94b0d114de8ce2006f8f4f31daee3",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 1,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661178,
-			"externalID": "33193",
-			"active": true,
-			"name": "Type 2 - Middle Unit",
-			"name_l1": "Type 2 - Middle Unit",
-			"name_l2": "Type 2 - Middle Unit",
-			"name_l3": "Type 2 - Middle Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 3,
-			"baths": 0,
-			"areaMin": 298.86907968,
-			"areaMax": null,
-			"priceMin": 3400000,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714244,
-					"externalID": "39d0e64c88bd7920d84cd11b19b4d04959e872df",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 2,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661177,
-			"externalID": "33194",
-			"active": true,
-			"name": "Type 1 - Middle Unit",
-			"name_l1": "Type 1 - Middle Unit",
-			"name_l2": "Type 1 - Middle Unit",
-			"name_l3": "Type 1 - Middle Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 4,
-			"baths": 0,
-			"areaMin": 353.12445504000004,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714242,
-					"externalID": "2ac5264244024d59435fd38a98d15abda42c45b8",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 3,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661296,
-			"externalID": "33195",
-			"active": true,
-			"name": "Type 2 - Edge Unit",
-			"name_l1": "Type 2 - Edge Unit",
-			"name_l2": "Type 2 - Edge Unit",
-			"name_l3": "Type 2 - Edge Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 4,
-			"baths": 0,
-			"areaMin": 383.87536128000005,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714243,
-					"externalID": "415029eab53d73adfbc971f6f736624e77816cbb",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 4,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661294,
-			"externalID": "33196",
-			"active": true,
-			"name": "Type 1 - Edge Unit",
-			"name_l1": "Type 1 - Edge Unit",
-			"name_l2": "Type 1 - Edge Unit",
-			"name_l3": "Type 1 - Edge Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 5,
-			"baths": 0,
-			"areaMin": 460.14875712,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714241,
-					"externalID": "d392cdafcee5b89b286a790ca5caba91535d7dfc",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 5,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661298,
-			"externalID": "33197",
-			"active": true,
-			"name": "Type 2 - Middle Unit",
-			"name_l1": "Type 2 - Middle Unit",
-			"name_l2": "Type 2 - Middle Unit",
-			"name_l3": "Type 2 - Middle Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 5,
-			"baths": 0,
-			"areaMin": 357.76960704000004,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714245,
-					"externalID": "59ad92f84011c55acc68edb5b31edb5d06542d60",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 6,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661299,
-			"externalID": "33200",
-			"active": true,
-			"name": "Type 3 - Edge Unit",
-			"name_l1": "Type 3 - Edge Unit",
-			"name_l2": "Type 3 - Edge Unit",
-			"name_l3": "Type 3 - Edge Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 5,
-			"baths": 0,
-			"areaMin": 460.14875712,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714246,
-					"externalID": "8041beb1093e3ed312253afb82bd3b8d88570b52",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 7,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661300,
-			"externalID": "33201",
-			"active": true,
-			"name": "Type 4 - Edge Unit",
-			"name_l1": "Type 4 - Edge Unit",
-			"name_l2": "Type 4 - Edge Unit",
-			"name_l3": "Type 4 - Edge Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 5,
-			"baths": 0,
-			"areaMin": 456.61844160000004,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714247,
-					"externalID": "56dc82042b6cb79ca8b2244233488309eac12481",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 8,
-			"floorPlan3dURL": null
-		},
-		{
-			"id": 1661301,
-			"externalID": "33202",
-			"active": true,
-			"name": "Type 5 - Edge Unit",
-			"name_l1": "Type 5 - Edge Unit",
-			"name_l2": "Type 5 - Edge Unit",
-			"name_l3": "Type 5 - Edge Unit",
-			"category": [
-				{
-					"id": 1,
-					"level": 0,
-					"externalID": "1",
-					"name": "Residential",
-					"name_l1": "سكني",
-					"name_l2": "居住物业",
-					"name_l3": "Жилые",
-					"slug": "residential",
-					"slug_l1": "residential",
-					"slug_l2": "residential",
-					"slug_l3": "residential",
-					"nameSingular": "Residential",
-					"nameSingular_l1": "سكني",
-					"nameSingular_l2": "居住物业",
-					"nameSingular_l3": "Жилые"
-				},
-				{
-					"id": 8,
-					"level": 1,
-					"externalID": "16",
-					"name": "Townhouses",
-					"name_l1": "تاون هاوس",
-					"name_l2": "联排别墅",
-					"name_l3": "Таунхаусы",
-					"slug": "townhouses",
-					"slug_l1": "townhouses",
-					"slug_l2": "townhouses",
-					"slug_l3": "townhouses",
-					"nameSingular": "Townhouse",
-					"nameSingular_l1": "تاون هاوس",
-					"nameSingular_l2": "联排别墅",
-					"nameSingular_l3": "Таунхаус"
-				}
-			],
-			"rooms": 5,
-			"baths": 0,
-			"areaMin": 423.26625024000003,
-			"areaMax": null,
-			"priceMin": null,
-			"priceMax": null,
-			"photos": [
-				{
-					"id": 824714248,
-					"externalID": "65daf22a7f8346c6df3716a737f7dd893361fa6a",
-					"title": null,
-					"orderIndex": 1,
-					"type": "floor_plan"
-				}
-			],
-			"order": 9,
-			"floorPlan3dURL": null
-		}
-	],
-	"completionStatus": "under-construction",
-	"unitCategories": [
-		[
+		"createdAt": "2025-01-30T14:28:10+00:00",
+		"externalID": "106435",
+		"id": 29876194,
+		"licenses": [
 			{
-				"id": 1,
-				"level": 0,
-				"externalID": "1",
-				"name": "Residential",
-				"name_l1": "سكني",
-				"name_l2": "居住物业",
-				"name_l3": "Жилые",
-				"slug": "residential",
-				"slug_l1": "residential",
-				"slug_l2": "residential",
-				"slug_l3": "residential",
-				"nameSingular": "Residential",
-				"nameSingular_l1": "سكني",
-				"nameSingular_l2": "居住物业",
-				"nameSingular_l3": "Жилые"
+				"number": "613164",
+				"authority": "DED"
 			},
 			{
-				"id": 8,
-				"level": 1,
-				"externalID": "16",
-				"name": "Townhouses",
-				"name_l1": "تاون هاوس",
-				"name_l2": "联排别墅",
-				"name_l3": "Таунхаусы",
-				"slug": "townhouses",
-				"slug_l1": "townhouses",
-				"slug_l2": "townhouses",
-				"slug_l3": "townhouses",
-				"nameSingular": "Townhouse",
-				"nameSingular_l1": "تاون هاوس",
-				"nameSingular_l2": "联排别墅",
-				"nameSingular_l3": "Таунхаус"
-			}
-		]
-	],
-	"unitRooms": [
-		3,
-		3,
-		4,
-		4,
-		5,
-		5,
-		5,
-		5,
-		5
-	],
-	"unitBaths": [
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
-	],
-	"hasPropertyAds": true,
-	"propertyAdCount": 6,
-	"locationCompletionStatus": "off-plan",
-	"isProjectOwned": false,
-	"documents": [
-		{
-			"title": {
-				"en": null,
-				"ar": null,
-				"zh": null,
-				"ru": null
-			},
-			"fileSource": "https://bayut-production.s3.eu-central-1.amazonaws.com/file/1572620/a4406cc274cc48baadc461c0bcf5461e.pdf",
-			"isActive": true,
-			"tag": "project_brochure"
-		}
-	],
-	"tierSlot": 0,
-	"additionalCategories": [
-		[
-			{
-				"id": 1,
-				"level": 0,
-				"externalID": "1",
-				"name": "Residential",
-				"name_l1": "سكني",
-				"name_l2": "居住物业",
-				"name_l3": "Жилые",
-				"slug": "residential",
-				"slug_l1": "residential",
-				"slug_l2": "residential",
-				"slug_l3": "residential",
-				"nameSingular": "Residential",
-				"nameSingular_l1": "سكني",
-				"nameSingular_l2": "居住物业",
-				"nameSingular_l3": "Жилые"
+				"number": "1858",
+				"authority": "RERA"
 			},
 			{
-				"id": 5,
-				"level": 1,
-				"externalID": "3",
-				"name": "Villas",
-				"name_l1": "فلل",
-				"name_l2": "别墅",
-				"name_l3": "Виллы",
-				"slug": "villas",
-				"slug_l1": "villas",
-				"slug_l2": "villas",
-				"slug_l3": "villas",
-				"nameSingular": "Villa",
-				"nameSingular_l1": "فیلا",
-				"nameSingular_l2": "别墅",
-				"nameSingular_l3": "Вилла"
+				"number": "718828",
+				"authority": "DED"
+			},
+			{
+				"number": "978711",
+				"authority": "DED"
 			}
 		],
-		[
-			{
-				"id": 1,
-				"level": 0,
-				"externalID": "1",
-				"name": "Residential",
-				"name_l1": "سكني",
-				"name_l2": "居住物业",
-				"name_l3": "Жилые",
-				"slug": "residential",
-				"slug_l1": "residential",
-				"slug_l2": "residential",
-				"slug_l3": "residential",
-				"nameSingular": "Residential",
-				"nameSingular_l1": "سكني",
-				"nameSingular_l2": "居住物业",
-				"nameSingular_l3": "Жилые"
-			},
-			{
-				"id": 8,
-				"level": 1,
-				"externalID": "16",
-				"name": "Townhouses",
-				"name_l1": "تاون هاوس",
-				"name_l2": "联排别墅",
-				"name_l3": "Таунхаусы",
-				"slug": "townhouses",
-				"slug_l1": "townhouses",
-				"slug_l2": "townhouses",
-				"slug_l3": "townhouses",
-				"nameSingular": "Townhouse",
-				"nameSingular_l1": "تاون هاوس",
-				"nameSingular_l2": "联排别墅",
-				"nameSingular_l3": "Таунхаус"
-			}
-		]
-	]
+		"logo": {
+			"id": 758550680,
+			"url": "<<logo url here>>"
+		},
+		"name": "fäm Properties - Branch 26",
+		"objectID": 29876194,
+		"performanceCohort": "underachieving",
+		"product": "premium",
+		"productScore": 2,
+		"roles": [],
+		"slug": "fam-properties-branch-26-106435",
+		"tier": 1,
+		"tr": 1,
+		"type": "agency"
+	},
+	"propertyType": "Apartments",
+	"price": 2175000,
+	"rera": "71693993635",
+	"priceCurrency": "AED",
+	"coordinates": {
+		"latitude": 25.220599416827,
+		"longitude": 55.275293281259
+	},
+	"type": "for-sale",
+	"zoneName": "Al Satwa",
+	"size": "1273.00",
+	"sizeMin": "1273.00 sqft",
+	"furnishing": "unfurnished",
+	"amenities": [
+		"Centrally Air-Conditioned",
+		"Balcony or Terrace",
+		"Maids Room"
+	],
+	"photos": [
+		"<<photo urls here>>"
+	],
+	"descriptionHTML": "<<Formatted description here>>"
 }
 ```
 
-> **Pro Tip:** You can download the resulting dataset in **JSON, CSV, Excel, or XML** formats directly from the Apify platform for easy integration into your CRM or internal property management system.
+## 💸 Pricing Model & Usage Logic
 
----
+This actor uses a tiered pay-per-event pricing model, with usage tracked and charged based on the number of properties processed and additional multipliers. Charges are triggered at specific usage thresholds and events.
+
+### 🟢 Charge Events & Tiers
+
+The actor uses a tiered pricing model based on the number of properties processed. Each tier has a specific charge event and rate per 1,000 properties:
+
+> **🔻 Cost Efficiency as You Scale:**
+> The tier-based pricing model is designed to reduce your cost per property as your usage increases. The more properties you process, the lower your per-unit cost becomes, helping keep your overall costs under control as you scale up to higher volumes.
+
+#### Starter Tier (`starter-tier-1K`)
+
+For the first 25,000 properties processed, the cost per 1,000 properties is **$10 USD**.
+This tier is ideal for small to medium jobs and ensures a low entry cost for initial usage.
+
+#### Growth Tier (`growth-tier-1K`)
+
+For properties processed from 25,000 up to 50,000 the cost per 1,000 properties drops to **$8 USD**.
+This tier rewards higher volume usage with a reduced rate, making it cost-effective for scaling up.
+
+#### Scale Tier (`scale-tier-1K`)
+
+For properties processed from 50,000 up to 100,000 the cost per 1,000 properties is **$6 USD**.
+This tier is designed for large-scale operations, offering further discounts as your volume increases.
+
+#### Enterprise Tier (`enterprise-tier-1K`)
+
+For properties processed above 100,000 the cost per 1,000 properties is **$5 USD**.
+This tier is for enterprise-level usage, providing the lowest rate for very high-volume processing.
+
+Each charge event is triggered automatically as your processed property count crosses into the next tier. The actor tracks usage and applies the correct rate for each tier, ensuring transparent and predictable billing.
+
+These pricing tiers are applied on a **monthly** basis, and your usage count resets at the start of each new month. This ensures you always start fresh and only pay for what you use each month.
+
+#### Example:
+
+- Scraping 100,000 properties in a month:
+
+- $10 per 1K properties for the first 10,000 properties ($100)
+- $8 per 1K properties upto 25,000 properties ($120)
+- $6 per 1K properties upto 50,000 properties ($150)
+- $5 per 1K properties above 50,000 properties ($250)
+- **Total:** $620
+
+### ⚡ Additional Usage Parameters (Multipliers)
+
+The actor may apply additional usage multipliers based on your input settings. These do **not** directly charge you extra, but they affect how quickly you use up your monthly quota. The more features you enable, the faster your included usage is consumed.
+
+- **🌐 Residential Proxy Usage:** If you use a residential proxy, an additional 5x usage multiplier will apply. This is due to the higher cost and complexity of residential proxy traffic.
+- **🧠 Memory Usage:** If you run the actor with more than 2048 MB of memory, you will be charged an additional usage multiplier. For example, running at 4096 MB will double your usage cost.
+- **🏷️ Full Property Details:** Enabling `fullPropertyDetails` will increase your usage multiplier by 5x, as it requires scraping more data per property.
+- **🏢 Retrieve Unit Number:** Enabling `retrieveUnitNumber` will increase your usage multiplier by 2x, as it requires additional data extraction per property.
+- **🔄 Monitoring Mode:** Enabling `monitoringMode` adds 2 propery count for retrival of tracked propery and 4 properies count as usage storing and tracking new property, as it requires additional logic and storage for incremental scraping.
+- **🕵️ Enable Delisting Tracker:** Enabling `enableDelistingTracker` adds 1x to your usage multiplier.
+- **📄 Add Empty Tracker Record:** Enabling `addEmptyTrackerRecord` doesn't add any value to multiplier. But it causes flat 1 property count usage (without multiplier) when tracker record is getting pushed.
+
+These multipliers are **cumulative**. For example, if you enable both `fullPropertyDetails` and `enableDelistingTracker`, your additional usage for each property will be by 6x.
+
+> **💡 Tip:**
+> For best cost efficiency, run this actor on **2048 MB memory**. The actor is highly optimized for this setting, and using more memory will increase your additional usage charges. Only increase memory if you have a specific need.
+
+## 🏢🔎 Finding Unit Number (Unit No.)
+
+This actor is now **directly integrated** with the [Dubai Property Unit Finder](https://apify.com/dhrumil/dubai-property-unit-finder?fpr=z2di7) actor! 🚀
+
+With this integration, you can:
+
+- Apply a filter or select all properties from a particular building on Bayut.
+- Simply turn on the `retrieveUnitNumber` option in your input.
+- Instantly get the **unit numbers for all properties in that building**—in one go! Super easy and powerful. 🏢➡️🔢
+
+No more manual lookups or separate runs. Just enable the option and let the integration do the work for you!
+
+> **Note:**
+> The Dubai Property Unit Finder actor has its **own pricing and billing**, which is **separate** from this Bayut scraper. When using integration mode, both actors will be billed independently according to their respective pricing models.
+
+## 🔁 Deduplication handled
+
+If multiple list urls contains overlapping results, they will get deduplicated within same run data.
+
+## ⚠️ Disclaimer
+
+This is not an official API provided by bayut. This is just a tool which helps you automate reading public information available on Bayut. This page or tool doesn't store any information protected by IP rights of Bayut. Developer doesn't even store any information available publically on Bayut site. Developer just provides the automation tool and have no obligation towards who/how someone use this tool and make use of the information.
+
+## 🚫 Limitations
+
+Since site allows only 50000 properties per listing/search result, you might want to break down your listing urls into smaller area if it has more than 50K results. Good News is that even if multiple list urls contains overlapping results, they will get deduplicated within same run data.
+
+## 🤝 Related Actors (You may also like)
+
+- [🏠 Property Finder Scraper](https://apify.com/dhrumil/propertyfinder-scraper?fpr=z2di7)
+- [🏢 Bayut Scraper](https://apify.com/dhrumil/bayut-scraper?fpr=z2di7)
+- [🏡 Dubizzle Scraper](https://apify.com/dhrumil/dubizzle-scraper?fpr=z2di7)
+- [🔍 UAE Dubai Property Owner Finder](https://apify.com/dhrumil/uae-dubai-property-owner-finder?fpr=z2di7)
+- [🏢 Dubai Property Unit Finder](https://apify.com/dhrumil/dubai-property-unit-finder?fpr=z2di7)
+
+## 🔎 Identifying delisted properties
+
+This actor provides you monitoring mode configuration using which you can get only incremental updates about newly added properties. In case, you also want to identify which properties are delisted from platform, you can use any of the following techniques with the help of this actor.
+
+1. Running Always in full scraper mode :
+Run this actor always in full scrape mode and cross check the new incoming batch of data with your existing database. If any property that exists in yoru database but not in newly scraped data batch, that means it's not listed anymore
+2. Use Key Value Store generated by scraper :
+If your are monitoring very large batch of data and you don't want to scrape everything all the time, this method involves bit of technicality but achieves the goal efectively. Apify has storage feature called [Key-value store](https://docs.apify.com/api/v2/#/reference/key-value-stores/key-collection/get-list-of-keys). When you run this scrape, this scraper stores every single property in key value store along with timestamp in apify store. Inside this store, key is property id itself and value is timestamp like this
+
+```
+{ lastSeen : '2023-11-02T05:59:25.763Z'}
+```
+
+Whenever you run this scraper, it will update the timestamp against particular id if it finds property on the platform. e.g. if we have 2 proprties with id `prop1` and `prop2` and we scraped them both on November 1, key value storage would look like this :
+
+```
+prop1 -> { lastSeen : '2023-11-01T05:59:25.763Z'}
+prop2 -> { lastSeen : '2023-11-01T05:59:25.763Z'}
+```
+
+Now if you run this scraper again on December 1 and prop1 is not on the platform anymore but prop2 is still there, key value storage would change like this :
+
+```
+prop1 -> { lastSeen : '2023-11-01T05:59:25.763Z'}
+prop2 -> { lastSeen : '2023-12-01T05:59:25.763Z'}
+```
+
+That means if any property has `lastSeen` less than latest batch you loaded, that property is delisted now. You can directly iterate through whole Key value storage using Apify key value storage API to identify this. Please refer to [this](https://docs.apify.com/api/v2/#/reference/key-value-stores/key-collection/get-list-of-keys) API documentation to do the same.
+
+Alternatively, you can iterate through your existing database active properties and use [this](https://docs.apify.com/api/v2/#/reference/key-value-stores/record/get-record) API to identify listing status.
+
+For this approach to work, it's important that you enable this feature via `enableDelistingTracker` (Enable Delisting tracker) input.
